@@ -12,8 +12,10 @@ CFG="$HOME/.config/opencode"
 
 log() { printf '\n==> %s\n' "$*"; }
 
-command -v node >/dev/null || { echo "node 18+ required"; exit 1; }
-command -v python3 >/dev/null || { echo "python3 required"; exit 1; }
+command -v node >/dev/null || { echo "node 18+ required (on Red Hat: sudo dnf install nodejs, or use nvm)"; exit 1; }
+NODE_MAJOR="$(node -e 'console.log(parseInt(process.versions.node.split(".")[0],10) || 0)')"
+[ "$NODE_MAJOR" -ge 18 ] || { echo "node 18+ required, found $(node --version); on Red Hat: sudo dnf install nodejs or use nvm"; exit 1; }
+command -v python3 >/dev/null || { echo "python3 required (on Red Hat: sudo dnf install python3)"; exit 1; }
 
 # 1) ECC: clone or update, build the OpenCode plugin payload, install (profile: full, hooks: standard)
 log "ECC install/update ($ECC_DIR)"
